@@ -1,0 +1,348 @@
+<div class="app">
+    <div class="layout">
+      <app-header></app-header>
+      <div class="page-container">
+        <app-navbar></app-navbar>
+
+        <div class="main-content">
+          <div class="container-fluid">
+            <div class="page-title">
+                <h4>Data</h4>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-block">
+                      <div class="row">
+                        <div class="col-md-2">
+                          <button class="btn btn-primary" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus mr-1"></i>Add</button>
+                        </div>
+                      </div>
+                      <div class="table-overflow">
+                          <table id="establishment_table" class="table table-lg table-hover">
+                            <thead>
+                                <tr>
+                                    
+                                    <th>Name</th>
+                                    <th>Establishment</th>
+                                    <th>Email</th>
+                                    <th>Featured</th>
+                                    <th>Analytics</th>
+                                    <th>Facebook</th>
+                                    <th>Twitter</th>
+                                    <th>Instagram</th>
+                                    <th>Webpage</th>
+                                    <th>Branch</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor = "let item of establishments; let i = index">
+                                <td>{{item.name}}</td>
+                                <td>{{item.establishment_id}}</td>
+                                <td>{{item.email}}</td>
+                                <td>{{item.featured | status}}</td>
+                                <td>{{item.analytics | status}}</td>
+                                <td>
+                                  <a href="{{item.facebook_link}}" class="btn btn-primary btn-inverse btn-icon btn-xs"><i class="ti-facebook"></i></a>
+                                </td>
+                                <td><a href="{{item.twitter_link}}" class="btn btn-info btn-inverse btn-icon btn-xs"><i class="ti-twitter"></i></a></td>
+                                <td><a href="{{item.instagram_link}}" class="btn btn-danger btn-inverse btn-icon btn-xs"><i class="ti-instagram"></i></a></td>
+                                <td><a href="{{item.webpage_link}}" class="btn btn-danger btn-icon btn-xs"><i class="ti-link"></i></a></td>
+                                <td><a routerLink="/branch/{{item.establishment_id}}" class="btn btn-success btn-icon btn-xs"><i class="ti-folder"></i></a></td>
+                                <td>
+                                  <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#editModal" (click)="getEstablishment(item.establishment_id, i)">
+                                      <i class="ti-settings"></i>
+                                  </button>
+                                  <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#delete-modal" (click)="setEstablishmentId(item.establishment_id, i)">
+                                    <i class="ti-trash"></i>
+                                  </button>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+<div class="modal fade show" id="addModal" style="padding: 15px;">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: 1px solid #e6ecf5;">
+              <h4>Add Establishment</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <form (ngSubmit)="onSubmit()">
+                <div class="modal-body">
+                    <div class="padding-15">
+                        <div class="row">
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" placeholder="Enter name" class="form-control" [formControl]="name">
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                  <label>Email</label>
+                                  <input type="email" placeholder="Enter email" class="form-control" [formControl]="email">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                  <label>Contact Name</label>
+                                  <input type="text" placeholder="Enter contact name" class="form-control" [formControl]="contact_name">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                  <label>Phone</label>
+                                  <input type="text" placeholder="Enter phone" class="form-control" [formControl]="phone">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                  <label>Vip</label>
+                                  <div class="toggle-checkbox ">
+                                    <input type="checkbox" [formControl]="vip" id="toggle5" checked>
+                                    <label for="toggle5"></label>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                  <label>Featured</label>
+                                  <div class="toggle-checkbox ">
+                                    <input type="checkbox" [formControl]="featured" id="toggle3" checked>
+                                    <label for="toggle3"></label>
+                                  </div>
+                                  
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                  <label>Active</label>
+                                  <div class="toggle-checkbox ">
+                                    <input type="checkbox" [formControl]="active" id="toggle2" checked>
+                                    <label for="toggle2"></label>
+                                  </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                  <label>Analytics</label>
+                                  <div class="toggle-checkbox ">
+                                    <input type="checkbox" [formControl]="analytics" id="toggle4" checked>
+                                    <label for="toggle4"></label>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                  <label>Instagram Link</label>
+                                  <input type="text" placeholder="Enter instagram link" class="form-control" [formControl]="instagram">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                  <label>Facebook Link</label>
+                                  <input type="text" placeholder="Enter facebook link" class="form-control" [formControl]="facebook">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                  <label>Twitter Link</label>
+                                  <input type="text" placeholder="Enter twitter link" class="form-control" [formControl]="twitter">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                  <label>Webpage Link</label>
+                                  <input type="text" placeholder="Enter webpage link" class="form-control" [formControl]="webpage">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                  <label>Description</label>
+                                  <input type="text" placeholder="Enter description" class="form-control" [formControl]="description">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">Close</button>
+	                  <button type="submit" class="btn btn-info waves-effect waves-light">Submit</button>
+                </div>
+            </form>
+            
+        </div>
+    </div>
+</div>
+<div id="delete-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <form (ngSubmit)="onDeleteReview()">
+                <div class="modal-body p-4">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <h4 for="field-1" class="control-label">Are you sure to delete this establishment?</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-info waves-effect waves-light">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade show" id="editModal" style="padding: 15px;">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: 1px solid #e6ecf5;">
+              <h4>Edit Establishment</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <form (ngSubmit)="onUpdateSubmit()">
+                <div class="modal-body">
+                    <div class="padding-15">
+                        <div class="row">
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" placeholder="Enter name" class="form-control" [formControl]="edit_name">
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                  <label>Email</label>
+                                  <input type="email" placeholder="Enter email" class="form-control" [formControl]="edit_email">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                  <label>Contact Name</label>
+                                  <input type="text" placeholder="Enter contact name" class="form-control" [formControl]="edit_contact_name">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                  <label>Phone</label>
+                                  <input type="text" placeholder="Enter phone" class="form-control" [formControl]="edit_phone">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                  <label>Vip</label>
+                                  <div class="toggle-checkbox ">
+                                    <input type="checkbox" [formControl]="vip" id="toggle6" checked>
+                                    <label for="toggle6"></label>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-4">
+                              <div class="form-group">
+                                <label>Featured</label>
+                                <div class="toggle-checkbox ">
+                                  <input type="checkbox" [formControl]="featured" id="toggle7" checked>
+                                  <label for="toggle7"></label>
+                                </div>
+                                
+                              </div>
+                          </div>
+                          <div class="col-md-4">
+                              <div class="form-group">
+                                <label>Active</label>
+                                <div class="toggle-checkbox ">
+                                  <input type="checkbox" [formControl]="active" id="toggle8" checked>
+                                  <label for="toggle8"></label>
+                                </div>
+                              </div>
+                          </div>
+                          <div class="col-md-4">
+                              <div class="form-group">
+                                <label>Analytics</label>
+                                <div class="toggle-checkbox ">
+                                  <input type="checkbox" [formControl]="analytics" id="toggle9" checked>
+                                  <label for="toggle9"></label>
+                                </div>
+                              </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                  <label>Instagram Link</label>
+                                  <input type="text" placeholder="Enter instagram link" class="form-control" [formControl]="edit_instagram">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                  <label>Facebook Link</label>
+                                  <input type="text" placeholder="Enter facebook link" class="form-control" [formControl]="edit_facebook">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                  <label>Twitter Link</label>
+                                  <input type="text" placeholder="Enter twitter link" class="form-control" [formControl]="edit_twitter">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                  <label>Webpage Link</label>
+                                  <input type="text" placeholder="Enter webpage link" class="form-control" [formControl]="edit_webpage">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                  <label>Description</label>
+                                  <input type="text" placeholder="Enter description" class="form-control" [formControl]="edit_description">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-info waves-effect waves-light">Update</button>
+                </div>
+            </form>
+            
+        </div>
+    </div>
+</div>
+
